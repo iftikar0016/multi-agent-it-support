@@ -23,6 +23,7 @@ def embed_text(text: str):
     return result.embeddings[0].values
 
 def search_similar_solution(query: str, category: str) -> str:
+    print(f"DEBUG: Searching with query='{query}' and category='{category}'")
     embedding = embed_text(query)
 
     url = f"{AZURE_SEARCH_ENDPOINT}/indexes/{AZURE_SEARCH_INDEX_NAME}/docs/search?api-version=2023-07-01-Preview"
