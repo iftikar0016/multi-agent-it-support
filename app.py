@@ -37,7 +37,7 @@ if "feedback_given" not in st.session_state:
 
 # Input section
 st.markdown('<div class="input-label">💬 <strong>Describe your IT issue:</strong></div>', unsafe_allow_html=True)
-user_input = st.text_area("", value=st.session_state.user_input, height=150)
+user_input = st.text_area("Describe your issue", value=st.session_state.user_input, height=150, label_visibility="collapsed")
 
 # Submit logic
 if st.button("🚀 Resolve Now") and user_input.strip():

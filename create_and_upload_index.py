@@ -2,6 +2,7 @@
 import os
 import json
 from tqdm import tqdm
+from google import genai
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents.indexes import SearchIndexClient
 from azure.search.documents.indexes.models import (
@@ -15,7 +16,6 @@ from azure.search.documents.indexes.models import (
     VectorSearchProfile
 )
 from azure.search.documents import SearchClient
-from openai import AzureOpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -25,20 +25,17 @@ AZURE_SEARCH_ENDPOINT = os.getenv("AZURE_SEARCH_ENDPOINT")  # e.g., https://your
 AZURE_SEARCH_KEY = os.getenv("AZURE_SEARCH_KEY")
 AZURE_SEARCH_INDEX_NAME = "it-ticket-solutions-index"
 
-AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_DEPLOYMENT = os.getenv("AZURE_OPENAI_DEPLOYMENT")  # e.g.,
-AZURE_OPENAI_API_VERSION = "2024-02-15-preview"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=GEMINI_API_KEY)
 
 DATA_FILE = "data/knowledge_base.json"
-VECTOR_DIMENSIONS = 1536  # Based on OpenAI embeddings
+VECTOR_DIMENSIONS = 768  # Gemini text-embedding-004
 # ----------------------------------------
 
 # ---------- Clients ----------
 credential = AzureKeyCredential(AZURE_SEARCH_KEY)
 index_client = SearchIndexClient(endpoint=AZURE_SEARCH_ENDPOINT, credential=credential)
 search_client = SearchClient(endpoint=AZURE_SEARCH_ENDPOINT, index_name=AZURE_SEARCH_INDEX_NAME, credential=credential)
-openai_client = AzureOpenAI(api_key=AZURE_OPENAI_API_KEY, api_version=AZURE_OPENAI_API_VERSION, azure_endpoint=AZURE_OPENAI_ENDPOINT)
 
 
 # ---------- Index Creation ----------
@@ -67,22 +64,27 @@ def create_index():
     index = SearchIndex(name=AZURE_SEARCH_INDEX_NAME, fields=fields, vector_search=vector_search)
 
     try:
-        # Try to get the index; if it exists, we skip creation
-        index_client.get_index(name=AZURE_SEARCH_INDEX_NAME)
-        print(f"ℹ️ Index '{AZURE_SEARCH_INDEX_NAME}' already exists. Skipping creation.")
+        # Delete the index if it exists to ensure schema update (e.g. vector dimensions)
+        print(f"⚠️ Deleting existing index '{AZURE_SEARCH_INDEX_NAME}' to apply new schema...")
+        index_client.delete_index(AZURE_SEARCH_INDEX_NAME)
     except Exception:
-        # If not found, create the index
+        pass  # Index didn't exist, which is fine
+
+    try:
         index_client.create_index(index)
         print(f"✅ Index '{AZURE_SEARCH_INDEX_NAME}' created successfully.")
+    except Exception as e:
+        print(f"❌ Error creating index: {e}")
 
 
 # ---------- Embedding ----------
 def embed_text(text: str):
-    response = openai_client.embeddings.create(
-        input=[text],
-        model=AZURE_OPENAI_DEPLOYMENT
+    # Gemini embedding model: gemini-embedding-001
+    result = client.models.embed_content(
+        model="gemini-embedding-001",
+        contents=text,
     )
-    return response.data[0].embedding
+    return result.embeddings[0].values
 
 
 # ---------- Upload ----------

@@ -1,6 +1,6 @@
 import os
 import requests
-from openai import AzureOpenAI
+from google import genai
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,24 +9,18 @@ load_dotenv()
 AZURE_SEARCH_ENDPOINT = os.getenv("AZURE_SEARCH_ENDPOINT")
 AZURE_SEARCH_KEY = os.getenv("AZURE_SEARCH_KEY")
 AZURE_SEARCH_INDEX_NAME = "it-ticket-solutions-index"
-AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_DEPLOYMENT = os.getenv("AZURE_OPENAI_DEPLOYMENT")
-AZURE_OPENAI_API_VERSION = "2024-02-15-preview"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Clients
-openai_client = AzureOpenAI(
-    api_key=AZURE_OPENAI_API_KEY,
-    api_version=AZURE_OPENAI_API_VERSION,
-    azure_endpoint=AZURE_OPENAI_ENDPOINT
-)
+client = genai.Client(api_key=GEMINI_API_KEY)
 
 def embed_text(text: str):
-    response = openai_client.embeddings.create(
-        input=[text],
-        model=AZURE_OPENAI_DEPLOYMENT
+    # Gemini embedding model: gemini-embedding-001
+    result = client.models.embed_content(
+        model="gemini-embedding-001",
+        contents=text,
     )
-    return response.data[0].embedding
+    return result.embeddings[0].values
 
 def search_similar_solution(query: str, category: str) -> str:
     embedding = embed_text(query)
