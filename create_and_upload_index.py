@@ -29,7 +29,7 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 DATA_FILE = "data/knowledge_base.json"
-VECTOR_DIMENSIONS = 768  # Gemini text-embedding-004
+VECTOR_DIMENSIONS = 3072  # gemini-embedding-001 output dimension
 # ----------------------------------------
 
 # ---------- Clients ----------
