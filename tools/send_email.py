@@ -1,12 +1,16 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Replace these with your actual SMTP credentials
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-SENDER_EMAIL = ""
-SENDER_PASSWORD = ""  # Use App Password for Gmail
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+SENDER_PASSWORD = os.getenv("SENDER_PASSWORD")  # Use App Password for Gmail
 
 
 def send_email(to_email: str, subject: str, body: str) -> bool:
@@ -43,6 +47,6 @@ def escalate_ticket_with_email(issue: str) -> dict:
     AI Notification Agent
     """
 
-    success = send_email(to_email="sandeshhase15@gmail.com", subject=subject, body=body)
+    success = send_email(to_email=os.getenv("TO_EMAIL"), subject=subject, body=body)
     return {"content": "📧 Email sent to IT support." if success else "⚠️ Failed to send email."}
 
