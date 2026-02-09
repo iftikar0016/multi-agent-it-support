@@ -21,6 +21,8 @@
 
 ## 🏗️ Architecture
 
+![Architecture diagram](https://raw.githubusercontent.com/iftikar0016/multi-agent-it-support/refs/heads/main/images/architecture.png)
+
 ```
 User Query
     ↓
