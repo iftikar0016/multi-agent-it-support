@@ -47,6 +47,7 @@ Solution Found? → Yes → Return to User
     ↓
 NotificationAgent (Escalate via email)
 ```
+![Architecture Diagram](https://raw.githubusercontent.com/iftikar0016/multi-agent-it-support/refs/heads/main/images/architecture.png)
 
 ### The Three Agents
 
@@ -394,7 +395,7 @@ Whether you're building an IT support system, customer service bot, or any other
 
 ## 🔗 Resources
 
-- **GitHub Repository**: [SupportX-AI-Assist](https://github.com/yourusername/SupportX-AI-Assist)
+- **GitHub Repository**: [SupportX-AI-Assist](https://github.com/iftikar0016/multi-agent-it-support)
 - **AutoGen Documentation**: [microsoft.github.io/autogen](https://microsoft.github.io/autogen/)
 - **Azure AI Search**: [azure.microsoft.com/ai-search](https://azure.microsoft.com/en-us/products/ai-services/ai-search)
 - **Google Gemini API**: [ai.google.dev](https://ai.google.dev/)
@@ -407,7 +408,7 @@ Whether you're building an IT support system, customer service bot, or any other
 
 I'd love to hear your thoughts on this project! Have you built similar multi-agent systems? What challenges did you face? Feel free to reach out or contribute to the project.
 
-**Questions or suggestions?** Open an issue on GitHub or reach out via [your contact method].
+**Questions or suggestions?** Open an issue on GitHub or reach out via **iftikaralam0016@gmail.com**.
 
 ---
 
