@@ -340,7 +340,7 @@ Want to build your own version? Here's how:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/SupportX-AI-Assist.git
+   git clone https://github.com/iftikar0016/multi-agent-it-support
    cd SupportX-AI-Assist
    ```
 
