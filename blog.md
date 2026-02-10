@@ -1,7 +1,7 @@
 # Building SupportX AI Assist: A Multi-Agent IT Support System
 
 **Published:** February 9, 2026  
-**Author:** Iftikhar  
+**Author:** Iftikar Alam
 **Tags:** AI, Multi-Agent Systems, AutoGen, Azure AI Search, IT Support, LLMs
 
 ---
